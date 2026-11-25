@@ -32,3 +32,10 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# OS
+.DS_Store
+
+# Local agent config (FoodMap)
+CLAUDE.local.md
+.claude/settings.local.json
