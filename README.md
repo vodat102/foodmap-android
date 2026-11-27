@@ -174,7 +174,7 @@ Chi tiết từng sprint: [`docs/sprints/`](docs/sprints/).
 ## 🤝 Quy trình làm việc
 
 - Nhánh `main` luôn build được; mỗi tính năng làm trên nhánh `feature/<tên-ngắn>` và merge qua Pull Request.
-- `main` được bảo vệ: không push thẳng, PR cần **1 approval** của thành viên còn lại và CI (`build`: assembleDebug + unit test) phải xanh; merge bằng **Squash**.
+- `main` được bảo vệ: không push thẳng, PR cần **1 approval** của thành viên còn lại và CI (`build`: assembleDebug + unit test) phải xanh; merge bằng **Merge commit** (giữ nguyên lịch sử commit của từng thành viên).
 - Hướng dẫn chi tiết từng bước: [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
 - Commit theo định dạng `<type>(<scope>): <summary>`, ví dụ `feat(checkin): capture GPS and time when photo is taken`.
 - Không commit thông tin bí mật: `local.properties`, API key, `google-services.json`.
