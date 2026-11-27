@@ -11,13 +11,13 @@ Tài liệu này mô tả cách hai thành viên đưa code vào repo FoodMap. �
 3. **1 approval** của thành viên còn lại, và mọi comment review đã được resolve.
 4. Nhánh đã **cập nhật theo `main` mới nhất**.
 
-Ngoài ra ruleset còn cấm force-push và cấm xoá `main`. Repo chỉ cho phép **Squash merge** và tự xoá nhánh sau khi merge.
+Ngoài ra ruleset còn cấm force-push và cấm xoá `main`. Repo chỉ cho phép **Merge commit** (không squash, không rebase) để mọi commit của từng thành viên đều nằm trên `main`, vì môn học chấm lịch sử commit. Nhánh tự bị xoá sau khi merge.
 
 ## Tóm tắt
 
 ```
 pull main → switch -c feature/x → code + commit → push -u → mở PR
-→ CI xanh → người kia approve → Squash and merge → switch main + pull → xoá nhánh cũ
+→ CI xanh → người kia approve → Merge pull request → switch main + pull → xoá nhánh cũ
 ```
 
 ## Các bước chi tiết
@@ -83,7 +83,7 @@ git push                                      # các lần sau
 - **Trên web:** vào repo, bấm **Compare & pull request** trên banner vàng.
 - **Bằng lệnh:** `gh pr create --base main --title "feat(checkin): capture photo with CameraX"`
 
-**Tiêu đề PR sẽ thành commit duy nhất trên `main`** (do Squash merge), nên phải viết đúng định dạng `type(scope): summary`.
+**Tiêu đề PR sẽ thành tiêu đề của merge commit trên `main`**, nên phải viết đúng định dạng `type(scope): summary`. Message của từng commit trong nhánh cũng lên `main` nguyên vẹn, vì vậy hãy viết chúng cẩn thận ngay từ bước 3.
 
 Mô tả PR viết bằng tiếng Việt, gồm:
 
@@ -113,9 +113,9 @@ Lưu ý:
 - Mọi luồng comment phải được **Resolve conversation** trước khi merge.
 - **Push thêm commit sau khi đã được approve thì approval cũ bị huỷ**, phải xin duyệt lại.
 
-### 8. Squash and merge
+### 8. Merge pull request
 
-Khi đủ điều kiện, nút **Squash and merge** chuyển xanh. Bấm vào rồi xác nhận. Tất cả commit của nhánh được gộp thành 1 commit trên `main`. Các commit nhỏ vẫn xem được trong PR, nên đóng góp của từng người vẫn được ghi nhận.
+Khi đủ điều kiện, nút **Merge pull request** chuyển xanh. Bấm vào rồi **Confirm merge**. Mọi commit của nhánh được đưa lên `main` nguyên vẹn (giữ tác giả và thời gian), kèm thêm 1 merge commit đánh dấu PR. Nhờ vậy trang Commits và Contributors của repo thể hiện đúng đóng góp của từng người.
 
 Nhánh trên GitHub tự bị xoá sau khi merge. Nếu bật **Auto-merge** trên PR, GitHub sẽ tự merge ngay khi đủ điều kiện.
 
@@ -124,7 +124,7 @@ Nhánh trên GitHub tự bị xoá sau khi merge. Nếu bật **Auto-merge** tr�
 ```bash
 git switch main
 git pull
-git branch -D feature/checkin-camera    # phải dùng -D vì squash tạo commit mới
+git branch -d feature/checkin-camera    # xoá nhánh đã merge ở máy
 git fetch --prune                       # xoá các nhánh remote đã bị xoá khỏi danh sách
 ```
 
