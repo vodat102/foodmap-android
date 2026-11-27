@@ -9,6 +9,7 @@
 ![Min SDK](https://img.shields.io/badge/minSdk-24-blue)
 ![Database](https://img.shields.io/badge/database-Room-4285F4)
 ![Status](https://img.shields.io/badge/status-Sprint%200-orange)
+[![Android CI](https://github.com/vodat102/foodmap-android/actions/workflows/android-ci.yml/badge.svg)](https://github.com/vodat102/foodmap-android/actions/workflows/android-ci.yml)
 
 Đồ án môn **SE114 – Nhập môn ứng dụng di động** · Trường Đại học Công nghệ Thông tin (UIT)
 
@@ -22,7 +23,7 @@ Các ứng dụng bản đồ cho bạn rất nhiều dữ liệu về địa đ
 
 > **Tìm món ăn phù hợp trước, tìm địa điểm sau.**
 
-Người dùng bắt đầu bằng câu hỏi *"Tôi muốn ăn gì?"*, sau đó ứng dụng hỗ trợ **khám phá → lọc → so sánh → quyết định** dựa trên khoảng cách, giá, đánh giá và giờ mở cửa.
+Người dùng bắt đầu bằng câu hỏi *"Tôi muốn ăn gì?"*, sau đó ứng dụng hỗ trợ **khám phá → lọc → so sánh → quyết định** dựa trên khoảng cách, giá và rating.
 
 Điểm khác biệt của FoodMap là **Food Check-in**: chụp món ăn ngay tại quán bằng camera trong app, ảnh được tự động gắn **vị trí GPS** và **thời gian thật**, giúp đánh giá trở nên đáng tin cậy.
 
@@ -33,15 +34,34 @@ Người dùng bắt đầu bằng câu hỏi *"Tôi muốn ăn gì?"*, sau đó
 | Nhóm | Tính năng |
 |---|---|
 | 🔍 **Khám phá món ăn** | Tìm kiếm theo tên món, duyệt theo danh mục, xem quán gần vị trí hiện tại |
-| 🎛️ **Bộ lọc** | Lọc theo khoảng cách, khoảng giá, rating, danh mục, trạng thái đang mở cửa |
-| 🏪 **Chi tiết quán** | Thông tin, hình ảnh, giờ mở cửa, thực đơn, đánh giá, vị trí trên bản đồ |
+| 🎛️ **Bộ lọc** | Lọc theo khoảng cách, khoảng giá, rating |
+| 🏪 **Chi tiết quán** | Thông tin, hình ảnh, địa chỉ, giờ mở cửa, khoảng giá, rating, thực đơn; nút **Chỉ đường** mở ứng dụng Google Maps |
 | ❤️ **Yêu thích** | Lưu và quản lý danh sách quán yêu thích |
 | 📸 **Food Check-in** | Chụp món bằng camera trong app, tự gắn GPS + thời gian, gợi ý quán gần nhất, thêm caption và số sao |
 | 📔 **Nhật ký ăn uống** | Timeline check-in của bạn; sửa caption / số sao, xóa check-in |
 
+### Màn hình
+
+| # | Màn hình | Mục đích |
+|---|---|---|
+| 1 | Trang chủ | Danh sách quán gần, danh mục món, ô tìm kiếm, nút Check-in |
+| 2 | Tìm kiếm & Lọc | Nhập tên món, chọn bộ lọc, xem danh sách kết quả |
+| 3 | Chi tiết quán | Thông tin quán, menu, giờ mở cửa, nút Chỉ đường, nút Yêu thích |
+| 4 | Chụp Check-in | Camera trong app; sau khi chụp thì xác nhận quán, nhập caption và số sao |
+| 5 | Nhật ký ăn uống | Timeline check-in của bản thân; sửa/xóa từng check-in |
+| 6 | Yêu thích | Danh sách quán đã lưu |
+
+Trang chủ, Nhật ký và Yêu thích chuyển qua lại bằng Bottom Navigation.
+
+### Tính năng mở rộng (sau MVP)
+
+- Bản đồ tích hợp trong app (Google Maps SDK).
+- Lọc theo danh mục món và trạng thái đang mở cửa.
+- Hiển thị check-in trên trang chi tiết quán; đọc và viết review.
+
 ### Giai đoạn 2 — Social Check-in (dự kiến)
 
-Đăng nhập (Firebase Auth), kết bạn, feed check-in của bạn bè, thả cảm xúc và bình luận.
+Đăng nhập (Firebase Auth), kết bạn, feed check-in của bạn bè, thả cảm xúc và bình luận; kèm quản trị & kiểm duyệt nội dung.
 
 > Xem đặc tả đầy đủ tại [`docs/product-spec.md`](docs/product-spec.md).
 
@@ -65,8 +85,8 @@ Người dùng bắt đầu bằng câu hỏi *"Tôi muốn ăn gì?"*, sau đó
 | Lưu trữ | Room (SQLite), dữ liệu mẫu từ JSON seed |
 | Camera | CameraX |
 | Vị trí | Fused Location Provider |
-| Bản đồ | Google Maps SDK (dự phòng: mở app Google Maps qua Intent) |
-| Giai đoạn 2 | Firebase Authentication, Cloud Firestore |
+| Bản đồ | Mở ứng dụng Google Maps qua Intent (Google Maps SDK để ở bản mở rộng) |
+| Giai đoạn 2 | Firebase Authentication, Cloud Firestore, dịch vụ lưu ảnh |
 
 ## 🏗️ Kiến trúc
 
@@ -82,7 +102,7 @@ UI (Activity / Fragment + XML)
 app/src/main/java/com/example/foodmap/
 ├── data/
 │   ├── local/
-│   │   ├── entity/      Restaurant, Food, RestaurantFood, Review, Favorite, CheckIn
+│   │   ├── entity/      Restaurant, Food, RestaurantFood, Favorite, CheckIn
 │   │   ├── dao/         Mỗi entity một DAO
 │   │   └── AppDatabase, SeedLoader
 │   └── repository/      RestaurantRepository, FoodRepository, CheckInRepository, ...
@@ -112,15 +132,7 @@ Các quyết định kiến trúc được ghi lại trong [`docs/adr/`](docs/ad
 
 2. Mở thư mục bằng Android Studio và đợi Gradle sync xong.
 
-3. _(Tuỳ chọn)_ Cấu hình Google Maps API key trong `local.properties`:
-
-   ```properties
-   MAPS_API_KEY=your_api_key_here
-   ```
-
-   Nếu không có key, ứng dụng vẫn chạy bình thường và sẽ mở ứng dụng Google Maps khi xem vị trí quán.
-
-4. Chọn thiết bị và nhấn **Run ▶**, hoặc build bằng dòng lệnh:
+3. Chọn thiết bị và nhấn **Run ▶**, hoặc build bằng dòng lệnh:
 
    ```bash
    ./gradlew assembleDebug        # Windows: gradlew.bat assembleDebug
@@ -128,7 +140,7 @@ Các quyết định kiến trúc được ghi lại trong [`docs/adr/`](docs/ad
 
 ### Dữ liệu thử nghiệm
 
-Dữ liệu quán và món ăn được nạp tự động từ [`app/src/main/assets/foodmap_seed.json`](app/src/main/assets/foodmap_seed.json) vào Room ở lần mở app đầu tiên. Không cần kết nối Internet hay tài khoản.
+Dữ liệu quán và món ăn được nạp tự động từ [`app/src/main/assets/foodmap_seed.json`](app/src/main/assets/foodmap_seed.json) vào Room ở lần mở app đầu tiên. Không cần kết nối Internet, tài khoản hay API key. Khi phát triển, app dùng một tọa độ mặc định (khu vực Làng Đại học / Thủ Đức) trước khi ghép GPS thật.
 
 ### Kiểm thử
 
@@ -139,11 +151,12 @@ Dữ liệu quán và món ăn được nạp tự động từ [`app/src/main/a
 
 ## 🗺️ Lộ trình
 
-- [x] Sprint 0 — Chốt phạm vi, đặc tả sản phẩm v0.2, khởi tạo project
-- [ ] Sprint 1 — Nền tảng: Room, seed data, navigation, Resource\<T\>
-- [ ] Sprint 2 — Khám phá món ăn, bộ lọc, chi tiết quán
-- [ ] Sprint 3 — Food Check-in và nhật ký ăn uống
-- [ ] Sprint 4 — Yêu thích, bản đồ, xử lý quyền và lỗi, hoàn thiện demo
+- [x] Sprint 0 — Chốt phạm vi, đặc tả sản phẩm v0.3, khởi tạo project, hoàn thành đề cương
+- [ ] Tuần 1 — Dựng khung app: Room, seed JSON, Bottom Navigation, khung 6 màn hình
+- [ ] Tuần 2 — Các màn hình khám phá quán (tọa độ mặc định); tích hợp camera và GPS
+- [ ] Tuần 3 — Hoàn thiện Check-in, Nhật ký ăn uống, Yêu thích → MVP chạy được
+- [ ] Tuần 4 — Xử lý trường hợp biên (từ chối quyền, dữ liệu lỗi), test chéo, sửa lỗi
+- [ ] Tuần 5 — Viết báo cáo, chuẩn bị demo
 - [ ] Giai đoạn 2 — Social Check-in với Firebase
 
 Chi tiết từng sprint: [`docs/sprints/`](docs/sprints/).
@@ -152,14 +165,17 @@ Chi tiết từng sprint: [`docs/sprints/`](docs/sprints/).
 
 | Thành viên | MSSV | Phụ trách |
 |---|---|---|
-| Võ Thành Đạt | 24520296 | Food Check-in (CameraX, vị trí, gợi ý quán, nhật ký) |
-| Nguyễn Văn Diễn | 24520300 | Khám phá món ăn, bộ lọc, chi tiết quán, yêu thích |
+| Võ Thành Đạt | 24520296 | Food Check-in (CameraX, lưu ảnh, GPS, gợi ý quán gần nhất), Nhật ký ăn uống, xử lý từ chối quyền Camera/GPS; tổng hợp báo cáo |
+| Nguyễn Văn Diễn | 24520300 | Bottom Navigation, nạp seed JSON vào Room, Trang chủ, Tìm kiếm & Lọc, Chi tiết quán, Yêu thích; khung XML màn hình 4, 5 |
+| Cả hai | | Thiết kế CSDL Room, Repository, DistanceCalculator; review chéo cuối mỗi tuần |
 
 **Giảng viên hướng dẫn:** ThS. Hoàng Văn Hà
 
 ## 🤝 Quy trình làm việc
 
 - Nhánh `main` luôn build được; mỗi tính năng làm trên nhánh `feature/<tên-ngắn>` và merge qua Pull Request.
+- `main` được bảo vệ: không push thẳng, PR cần **1 approval** của thành viên còn lại và CI (`build`: assembleDebug + unit test) phải xanh; merge bằng **Squash**.
+- Hướng dẫn chi tiết từng bước: [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
 - Commit theo định dạng `<type>(<scope>): <summary>`, ví dụ `feat(checkin): capture GPS and time when photo is taken`.
 - Không commit thông tin bí mật: `local.properties`, API key, `google-services.json`.
 

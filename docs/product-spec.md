@@ -1,16 +1,27 @@
 # FoodMap
 
-## Product Specification v0.2
+## Product Specification v0.3
 
 **Project type:** Android Mobile Application  
 **Development approach:** Agile / Scrum-inspired  
 **Initial platform:** Android  
 **Primary language:** Java  
 **Document status:** Draft  
-**Version:** 0.2  
-**Last updated:** 25/11/2026  
+**Version:** 0.3  
+**Last updated:** 26/11/2026  
 **Course:** SE114 – Nhập môn ứng dụng di động (UIT)  
 **Team size:** 2 thành viên
+
+### Thay đổi trong v0.3
+
+Đồng bộ với đề cương đồ án đã chốt (`24520300_24520296_SE114_FoodMap`):
+
+- **Thu gọn MVP:** bỏ Google Maps SDK (chỉ mở ứng dụng Google Maps qua Intent bằng nút "Chỉ đường"); bộ lọc còn 3 tiêu chí (khoảng cách, giá, rating); trang chi tiết quán không hiển thị check-in. Ba phần này chuyển sang tính năng mở rộng (7.8–7.10).
+- **Review dạng văn bản không thuộc MVP:** quán chỉ có rating trong seed JSON; US-013 chuyển sang Later.
+- **Giữ Yêu thích** trong MVP (khối lượng nhỏ, là thực thể lưu bền vững thứ hai).
+- Bổ sung danh sách **6 màn hình** và **mô hình dữ liệu** của MVP (6.3, 6.4).
+- Admin Management đổi thành **Quản trị & kiểm duyệt**, đi kèm Giai đoạn 2 (7.5).
+- Cập nhật **phân công 2 thành viên** và **kế hoạch 5 tuần** (mục 18, 19).
 
 ### Thay đổi trong v0.2
 
@@ -139,10 +150,10 @@ Phiên bản MVP dự kiến bao gồm:
 - Xem vị trí hiện tại.
 - Tìm kiếm món ăn.
 - Xem danh sách địa điểm.
-- Xem địa điểm trên bản đồ.
+- Mở vị trí quán trong ứng dụng Google Maps (nút "Chỉ đường").
 - Xem thông tin nhà hàng.
 - Xem các món ăn được phục vụ.
-- Xem rating / review.
+- Xem rating.
 - Lọc kết quả.
 - Lưu địa điểm yêu thích.
 - Check-in món ăn tại quán bằng camera trong app.
@@ -167,8 +178,8 @@ Người dùng có thể lọc theo:
 - Khoảng cách.
 - Khoảng giá.
 - Rating.
-- Danh mục món ăn.
-- Trạng thái đang mở cửa.
+
+Lọc theo danh mục món và trạng thái đang mở cửa chuyển sang tính năng mở rộng (7.9). Danh mục món vẫn được dùng để duyệt quán ở Trang chủ.
 
 ### Restaurant Detail
 
@@ -177,13 +188,12 @@ Thông tin dự kiến:
 - Tên.
 - Hình ảnh.
 - Địa chỉ.
-- Vị trí.
+- Nút "Chỉ đường": mở vị trí quán trong ứng dụng Google Maps qua Intent (nếu máy không có ứng dụng bản đồ thì mở bằng trình duyệt hoặc báo lỗi).
 - Khoảng giá.
 - Rating.
-- Review.
 - Danh sách món.
 - Giờ hoạt động.
-- Các check-in đã thực hiện tại quán.
+- Nút Yêu thích.
 
 ### Food Check-in
 
@@ -195,7 +205,7 @@ Tính năng lấy cảm hứng từ Locket: người dùng chụp món ăn ngay 
 - Nhập caption và số sao (1–5).
 - Timeline “Nhật ký ăn uống”: danh sách check-in của bản thân, mới nhất lên đầu; có trạng thái danh sách rỗng.
 - Sửa caption / số sao; xóa check-in (có hộp thoại xác nhận).
-- Trang chi tiết quán hiển thị các check-in tại quán đó.
+- Ảnh lưu trong bộ nhớ riêng của app (`getFilesDir()`); Room chỉ lưu đường dẫn `photoPath`. Khi hiển thị Nhật ký, tải ảnh thu nhỏ để tránh OutOfMemoryError.
 
 Dữ liệu check-in (Room entity, dự kiến):
 
@@ -213,8 +223,33 @@ Dữ liệu check-in (Room entity, dự kiến):
 
 ## 6.2. Phân giai đoạn phát triển
 
-- **Giai đoạn 1 – MVP (offline, Room):** Food Discovery, Filtering, Restaurant Detail, Favorite và Food Check-in cá nhân.
-- **Giai đoạn 2 – Social Check-in (Firebase):** đăng nhập, kết bạn, feed check-in của bạn bè, thả cảm xúc, bình luận (xem 7.7). Chỉ triển khai khi MVP đã hoàn thành và ổn định.
+- **Giai đoạn 1 – MVP (offline, Room):** Food Discovery, Filtering (3 tiêu chí), Restaurant Detail (có nút Chỉ đường), Favorite, Food Check-in cá nhân và Nhật ký ăn uống.
+- **Giai đoạn 2 – Social Check-in (Firebase):** đăng nhập, kết bạn, feed check-in của bạn bè, thả cảm xúc, bình luận (xem 7.7), kèm quản trị & kiểm duyệt (7.5). Chỉ triển khai khi MVP đã hoàn thành và ổn định.
+
+## 6.3. Màn hình MVP
+
+| STT | Màn hình | Mục đích |
+|---|---|---|
+| 1 | Trang chủ | Danh sách quán gần, danh mục món, ô tìm kiếm, nút Check-in |
+| 2 | Tìm kiếm & Lọc | Nhập tên món, chọn bộ lọc, xem danh sách kết quả |
+| 3 | Chi tiết quán | Thông tin quán, menu, giờ mở cửa, nút Chỉ đường, nút Yêu thích |
+| 4 | Chụp Check-in | Camera trong app; sau khi chụp thì xác nhận quán, nhập caption và số sao |
+| 5 | Nhật ký ăn uống | Timeline check-in của bản thân; sửa/xóa từng check-in |
+| 6 | Yêu thích | Danh sách quán đã lưu |
+
+Luồng chính: Trang chủ → Tìm kiếm & Lọc → Chi tiết quán; Trang chủ → Chụp Check-in → Nhật ký ăn uống. Trang chủ, Nhật ký và Yêu thích chuyển qua lại bằng Bottom Navigation.
+
+## 6.4. Mô hình dữ liệu MVP
+
+| Entity | Các trường chính | Lưu trữ |
+|---|---|---|
+| Restaurant | id, tên, địa chỉ, latitude, longitude, khoảng giá, rating, giờ mở/đóng cửa, ảnh | Seed JSON → Room (chỉ đọc) |
+| Food | id, tên món, danh mục, giá | Seed JSON → Room (chỉ đọc) |
+| RestaurantFood | restaurantId, foodId (nhiều-nhiều) | Seed JSON → Room (chỉ đọc) |
+| CheckIn | id, photoPath, latitude, longitude, capturedAt, restaurantId (có thể null), caption, rating (1–5), createdAt, updatedAt | Room; thêm/xem/sửa/xóa (vị trí và thời gian không sửa được) |
+| Favorite | restaurantId, savedAt | Room |
+
+MVP không có entity Review (xem 7.4). Validate input: độ dài caption, số sao 1–5; mọi danh sách có trạng thái rỗng.
 
 # 7. Future Features
 
@@ -258,17 +293,17 @@ Người dùng có thể:
 - Đăng hình ảnh.
 - Chỉnh sửa / xóa review của mình.
 
-**Ghi chú:** trong MVP, nhu cầu đánh giá được đáp ứng một phần qua Food Check-in (có số sao và cảm nhận). Review dạng văn bản đầy đủ phát triển sau.
+**Ghi chú:** trong MVP, nhu cầu đánh giá được đáp ứng một phần qua Food Check-in (có số sao và caption); quán chỉ hiển thị rating có sẵn trong seed JSON. Review dạng văn bản (đọc và viết) phát triển sau.
 
-## 7.5. Restaurant / Admin Management
+## 7.5. Quản trị & kiểm duyệt (đi kèm Giai đoạn 2)
 
-Admin có thể:
+MVP không cần admin: dữ liệu quán là seed JSON do nhóm soạn, check-in chỉ nằm trên máy người dùng. Khi Giai đoạn 2 đưa nội dung lên server, việc quản lý tăng dần theo quy mô:
 
-- Thêm nhà hàng.
-- Chỉnh sửa thông tin.
-- Quản lý món ăn.
-- Kiểm duyệt review.
-- Quản lý dữ liệu.
+- **Ít người dùng:** quản lý trực tiếp trên Firebase Console (xem/sửa/xóa dữ liệu, khóa tài khoản).
+- **Có báo cáo vi phạm:** nút Báo cáo / Chặn trong app; trường `role` (user/admin) và Firestore Security Rules để chỉ admin được xóa nội dung của người khác.
+- **Quy mô lớn:** web admin riêng (không nằm trong app người dùng), kết hợp kiểm duyệt ảnh/từ ngữ tự động.
+
+Phạm vi: báo cáo/chặn người dùng, phân quyền admin, kiểm duyệt check-in và bình luận, quản lý dữ liệu quán.
 
 ## 7.6. Analytics
 
@@ -296,6 +331,18 @@ Mở rộng Food Check-in thành mạng xã hội nhỏ giữa bạn bè, theo m
 - Phương án thay thế để lưu ảnh: Cloudinary hoặc Supabase Storage.
 - Cần phương án demo khả thi: tài khoản demo và dữ liệu mẫu.
 
+## 7.8. Bản đồ tích hợp
+
+Hiển thị quán trên bản đồ ngay trong app bằng Google Maps SDK (cần API key). MVP chỉ mở ứng dụng Google Maps qua Intent.
+
+## 7.9. Lọc nâng cao
+
+Lọc theo danh mục món và trạng thái đang mở cửa (cần xử lý quán mở qua nửa đêm).
+
+## 7.10. Check-in tại trang quán
+
+Trang chi tiết quán hiển thị các check-in đã chụp tại quán đó (US-029).
+
 # 8. Core User Flow
 
 ## Flow 1 — Search Food
@@ -316,7 +363,7 @@ Mở rộng Food Check-in thành mạng xã hội nhỏ giữa bạn bè, theo m
        ↓
     Restaurant Detail
        ↓
-    Choose / Navigate
+    Tap "Chỉ đường" → open Google Maps (Intent)
 
 ## Flow 2 — Discover Nearby Food
 
@@ -334,7 +381,7 @@ Mở rộng Food Check-in thành mạng xã hội nhỏ giữa bạn bè, theo m
        ↓
     Restaurant Detail
 
-## Flow 3 — Personalized Discovery
+## Flow 3 — Personalized Discovery (tính năng mở rộng, chưa thuộc MVP)
 
     Open App
        ↓
@@ -480,7 +527,7 @@ As a user, I want to edit the caption and rating of my check-in so that I can fi
 
 As a user, I want to delete my check-in so that I can remove entries I no longer want.
 
-### US-029
+### US-029 (Later — v0.3)
 
 As a user, I want to see check-ins on a restaurant’s detail page so that I can see real dishes and experiences there.
 
@@ -502,7 +549,17 @@ As a user, I want to react to a friend’s check-in so that I can respond quickl
 
 As a user, I want to comment on a friend’s check-in so that we can talk about the food.
 
-# 10. Product Backlog — v0.2
+# Epic 9 — Mở rộng sau MVP (v0.3)
+
+### US-034
+
+As a user, I want to see restaurants on a map inside the app so that I can compare their locations at a glance.
+
+### US-035
+
+As a user, I want to filter by food category and open-now status so that I only see places I can eat at right now.
+
+# 10. Product Backlog — v0.3
 
 | ID     | Feature                        | Priority | MVP            |
 |--------|--------------------------------|----------|----------------|
@@ -513,12 +570,12 @@ As a user, I want to comment on a friend’s check-in so that we can talk about 
 | US-005 | Food categories                | High     | Yes            |
 | US-006 | Nearby restaurants             | Critical | Yes            |
 | US-007 | Restaurant detail              | Critical | Yes            |
-| US-008 | Map                            | Critical | Yes            |
+| US-008 | Open location in Maps (Intent) | High     | Yes            |
 | US-009 | Menu                           | High     | Yes            |
 | US-010 | Distance filter                | High     | Yes            |
 | US-011 | Price filter                   | High     | Yes            |
 | US-012 | Rating filter                  | Medium   | Yes            |
-| US-013 | View reviews                   | High     | Yes            |
+| US-013 | View reviews                   | Medium   | Later          |
 | US-014 | Rating                         | Medium   | Yes (Check-in) |
 | US-015 | Write review                   | Medium   | Later          |
 | US-016 | Favorite                       | High     | Yes            |
@@ -526,7 +583,7 @@ As a user, I want to comment on a friend’s check-in so that we can talk about 
 | US-018 | Personalized recommendation    | High     | Later          |
 | US-019 | “What should I eat?”           | High     | Later          |
 | US-020 | Explainable recommendation     | High     | Later          |
-| US-021 | Admin management               | Medium   | Later          |
+| US-021 | Moderation & admin             | Medium   | Phase 2        |
 | US-022 | Analytics                      | Low      | Later          |
 | US-023 | Check-in with in-app camera    | Critical | Yes            |
 | US-024 | Auto GPS + time on check-in    | Critical | Yes            |
@@ -534,11 +591,13 @@ As a user, I want to comment on a friend’s check-in so that we can talk about 
 | US-026 | Check-in timeline (food diary) | Critical | Yes            |
 | US-027 | Edit check-in                  | High     | Yes            |
 | US-028 | Delete check-in                | High     | Yes            |
-| US-029 | Check-ins on restaurant detail | Medium   | Yes            |
+| US-029 | Check-ins on restaurant detail | Medium   | Later          |
 | US-030 | Add friends                    | Medium   | Phase 2        |
 | US-031 | Friends’ check-in feed         | Medium   | Phase 2        |
 | US-032 | React to check-in              | Low      | Phase 2        |
 | US-033 | Comment on check-in            | Low      | Phase 2        |
+| US-034 | In-app map (Maps SDK)          | Medium   | Later          |
+| US-035 | Category / open-now filter     | Medium   | Later          |
 
 # 11. Non-Functional Requirements — Initial Draft
 
@@ -548,16 +607,16 @@ Các chức năng chính phải có navigation rõ ràng và người dùng mớ
 
 ## NFR-002 — Performance
 
-Các thao tác tìm kiếm và hiển thị dữ liệu cần phản hồi trong thời gian hợp lý trong điều kiện mạng bình thường.
+Các thao tác tìm kiếm và hiển thị dữ liệu cần phản hồi trong thời gian hợp lý (MVP chạy offline, dữ liệu đọc từ Room). Danh sách ảnh trong Nhật ký phải tải ảnh thu nhỏ.
 
 ## NFR-003 — Reliability
 
 Ứng dụng cần xử lý các trường hợp:
 
-- Không có Internet.
-- Không có dữ liệu.
-- Location bị từ chối.
-- API lỗi.
+- Không có dữ liệu (danh sách rỗng, seed lỗi).
+- Location bị từ chối (chọn quán thủ công, không sắp theo khoảng cách).
+- Máy không có ứng dụng bản đồ khi bấm "Chỉ đường".
+- Không có Internet / API lỗi (chỉ áp dụng từ Giai đoạn 2).
 - Dữ liệu không hợp lệ.
 - Camera bị từ chối (hiển thị hướng dẫn và nút mở Cài đặt).
 - Không xác định được vị trí khi check-in (vẫn cho lưu, không gắn quán).
@@ -578,7 +637,7 @@ Thiết kế MVP cần cho phép bổ sung recommendation, review, admin và cá
 
 Thời gian và vị trí của check-in phải được ghi nhận tự động tại thời điểm chụp và người dùng không được chỉnh sửa. Ảnh check-in chỉ được tạo từ camera trong app.
 
-# 12. Technical Direction — v0.2
+# 12. Technical Direction — v0.3
 
 Các quyết định đã chốt:
 
@@ -592,12 +651,15 @@ Các quyết định đã chốt:
        ├── Room / Local Data (seed: assets/foodmap_seed.json)
        ├── CameraX (Food Check-in)
        ├── Fused Location Provider
+       ├── Intent mở Google Maps (nút Chỉ đường)
        └── Giai đoạn 2: Firebase Auth + Firestore + lưu ảnh
 
 - Dữ liệu: JSON seed → Repository → Room; quan hệ nhiều-nhiều Food ↔ Restaurant qua RestaurantFood.
 - Dùng chung Resource\<T\> (LOADING / SUCCESS / ERROR) cho mọi feature.
 - MVP không dùng REST API hay backend.
-- Bản đồ: Google Maps SDK nếu cấu hình được API key; phương án dự phòng là mở ứng dụng Google Maps qua Intent.
+- Bản đồ: MVP chỉ mở ứng dụng Google Maps qua Intent; Google Maps SDK để ở tính năng mở rộng (7.8).
+- Ảnh check-in: lưu file trong `getFilesDir()`, Room lưu `photoPath`.
+- Phát triển và test với một tọa độ mặc định (khu vực Làng Đại học / Thủ Đức) trước khi ghép GPS thật.
 
 # 13. Agile Development Strategy
 
@@ -628,7 +690,7 @@ Một User Story chỉ được xem là hoàn thành khi:
 - Các trường hợp lỗi chính đã được xử lý.
 - Đã test chức năng.
 - UI không có lỗi nghiêm trọng.
-- Code đã được review.
+- Code đã được thành viên còn lại review (review chéo cuối mỗi tuần).
 - Code được commit lên Git.
 - Documentation liên quan được cập nhật.
 - Thành viên phụ trách giải thích được luồng xử lý và các đoạn code chính (theo quy định sử dụng AI của môn học).
@@ -662,15 +724,15 @@ Sau phiên bản MVP, project hướng tới:
 
 | **Yêu cầu**                                                                           | **Cách FoodMap đáp ứng**                                                                          | **Trạng thái** |
 |---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|----------------|
-| ≥ 4 màn hình chức năng                                                                | Trang chủ / danh sách, tìm kiếm + lọc, chi tiết quán, chụp check-in, timeline check-in, yêu thích | Đạt            |
+| ≥ 4 màn hình chức năng                                                                | 6 màn hình: Trang chủ, Tìm kiếm & Lọc, Chi tiết quán, Chụp Check-in, Nhật ký ăn uống, Yêu thích | Đạt (kế hoạch) |
 | Thực thể lưu bền vững có thêm / xem / sửa / xóa; validate input; xử lý danh sách rỗng | CheckIn (Room): tạo, xem timeline, sửa caption / số sao, xóa                                      | Đạt (kế hoạch) |
 | ≥ 1 tính năng đặc thù Android                                                         | Camera (CameraX) + vị trí (Fused Location)                                                        | Đạt (kế hoạch) |
 | Xử lý nghiệp vụ ngoài CRUD                                                            | Tìm kiếm kết hợp bộ lọc; gợi ý quán gần nhất khi check-in                                         | Đạt (kế hoạch) |
 | Xử lý từ chối quyền, dữ liệu lỗi, thao tác không hợp lệ                               | Vị trí: chọn quán thủ công; Camera: thông báo + mở Cài đặt                                        | Cần làm        |
 | Dữ liệu thử nghiệm                                                                    | assets/foodmap_seed.json + vài check-in mẫu                                                       | Đạt            |
-| Dịch vụ ngoài có cách demo khả thi                                                    | MVP offline; Maps có phương án dự phòng                                                           | Đạt            |
+| Dịch vụ ngoài có cách demo khả thi                                                    | MVP offline; Chỉ đường mở Google Maps qua Intent, có xử lý khi máy không có ứng dụng bản đồ | Đạt            |
 | Nộp: mã nguồn GitHub có lịch sử commit, hướng dẫn cài đặt, demo                       | Mỗi thành viên commit phần feature mình sở hữu                                                    | Duy trì        |
-| Báo cáo 20–50 trang; đề cương 2–4 trang                                               | Đề cương: MSSV1_MSSV2_SE114_FoodMap.pdf                                                           | Cần làm        |
+| Báo cáo 20–50 trang; đề cương 2–4 trang                                               | Đề cương `24520300_24520296_SE114_FoodMap` đã hoàn thành; báo cáo: mỗi người viết phần mình, Đạt tổng hợp | Đề cương: chờ nộp; báo cáo: Tuần 5 |
 
 # 17. Decisions & Open Questions
 
@@ -691,30 +753,53 @@ Các câu hỏi ở v0.1 đã được trả lời:
 13. **Dữ liệu nhà hàng lấy từ đâu?** → Nhóm tự xây dựng seed JSON.
 14. **Có cần triển khai ứng dụng thực tế không?** → Không bắt buộc; chạy trên máy thật / máy ảo, nộp GitHub + hướng dẫn cài đặt + dữ liệu thử + demo.
 
+Quyết định bổ sung ở v0.3 (khi chốt đề cương):
+
+15. **Có giữ Google Maps SDK trong MVP?** → Không; dùng Intent mở Google Maps, SDK chuyển sang mở rộng.
+16. **Bộ lọc gồm những tiêu chí nào?** → Khoảng cách, giá, rating. Danh mục và đang mở cửa chuyển sang mở rộng.
+17. **Có bỏ Yêu thích khỏi MVP?** → Không; giữ vì khối lượng nhỏ.
+18. **Có cần admin?** → Không cần trong MVP; quản trị & kiểm duyệt đi kèm Giai đoạn 2.
+19. **Chia việc thế nào cho đều?** → Mỗi người viết báo cáo và test case phần mình; Đạt tổng hợp báo cáo; Diễn dựng khung XML cho màn hình 4, 5; review chéo cuối tuần, test chéo ở Tuần 4.
+
 Câu hỏi còn mở:
 
 - Hạn nộp đề cương, báo cáo và lịch vấn đáp chính thức.
+- Giới hạn số trang của đề cương (bản tóm tắt ghi 2–4 trang; cần đối chiếu tài liệu gốc của giảng viên).
 - Dịch vụ lưu ảnh cho Giai đoạn 2: Firebase (gói Blaze) hay Cloudinary / Supabase.
 
 # 18. Current Product Status
 
-**Status:** Discovery / Sprint 0 — đã chốt scope v0.2
+**Status:** Sprint 0 — đã chốt scope v0.3 và hoàn thành đề cương
 
 **Current objective:**
 
-> **Viết đề cương đồ án (2–4 trang, theo mẫu của giảng viên) dựa trên Product Specification v0.2.**
+> **Nộp đề cương; dựng khung app (Room, seed JSON, Bottom Navigation, khung 6 màn hình).**
 
 **Next milestone:**
 
-> **Đề cương được duyệt; dựng khung app (Room + seed + navigation) và bắt đầu Sprint 1.**
+> **Tuần 2: các màn hình khám phá quán chạy với tọa độ mặc định; chụp và lưu được ảnh kèm tọa độ.**
 
-**Team split (dự kiến) — Feature Ownership + Shared Foundation:**
+**Phân công — Feature Ownership + Shared Foundation:**
 
-- Thành viên A: Food Check-in (CameraX, vị trí, gợi ý quán, timeline).
-- Thành viên B: Food Discovery, Filtering, Restaurant Detail, Favorite.
-- Dùng chung: Room, Repository, Resource\<T\>, LocationHelper / DistanceCalculator.
+| Thành viên | Công việc chính | Kết quả dự kiến |
+|---|---|---|
+| Võ Thành Đạt (24520296) | Food Check-in (CameraX, lưu ảnh nội bộ, lấy GPS, gợi ý quán gần nhất), Nhật ký ăn uống (xem/sửa/xóa), xử lý từ chối quyền Camera/GPS; báo cáo và test case phần mình; tổng hợp báo cáo chung | Màn hình 4, 5 chạy ổn định; báo cáo hoàn chỉnh của nhóm |
+| Nguyễn Văn Diễn (24520300) | Bottom Navigation, nạp seed JSON vào Room, Trang chủ, Tìm kiếm & Lọc, Chi tiết quán (nút Chỉ đường), Yêu thích; dựng khung XML cho màn hình 4, 5; báo cáo và test case phần mình | Màn hình 1, 2, 3, 6 chạy được; dữ liệu mẫu nạp đúng |
+| Cả hai | Thiết kế CSDL Room, Repository, DistanceCalculator; review code chéo cuối mỗi tuần | Cấu trúc dữ liệu thống nhất; cả hai giải thích được toàn bộ luồng ứng dụng |
 
 **Important principle:**
 
 > Không cần học hết Android trước khi bắt đầu.  
 > Kiến thức sẽ được học song song với việc hoàn thành từng Sprint.
+
+# 19. Kế hoạch 5 tuần
+
+Mỗi tuần là một Sprint (mục 13). Bảng dưới khớp với đề cương; chi tiết từng tuần ghi trong README trên GitHub.
+
+| Tuần | Công việc | Kết quả |
+|---|---|---|
+| 1 | Hoàn thiện đề cương; dựng khung app (Room, seed JSON, điều hướng) | Đề cương được duyệt; app chạy được, có dữ liệu mẫu |
+| 2 | Làm các màn hình khám phá quán; tích hợp camera và GPS | Các màn hình chạy được |
+| 3 | Hoàn thiện Check-in, Nhật ký ăn uống, Yêu thích | MVP chạy được |
+| 4 | Xử lý trường hợp biên, test chéo, sửa lỗi | App ổn định |
+| 5 | Viết báo cáo, chuẩn bị demo | Sản phẩm cuối kỳ |

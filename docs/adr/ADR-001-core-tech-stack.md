@@ -19,3 +19,4 @@
 ## Consequences
 - No login screens in MVP; Epic 1 (Account) moves to Phase 2.
 - Maps: Google Maps SDK if an API key is configured, otherwise open the Maps app via Intent.
+  _Superseded by ADR-002: the MVP only opens the Maps app via Intent._
