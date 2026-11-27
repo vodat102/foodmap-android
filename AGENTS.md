@@ -15,6 +15,8 @@ Claude Code reads this through `CLAUDE.md`; Antigravity reads it directly.
 - No cross-platform frameworks (React Native, Flutter, ...) — forbidden by the course.
 - Data: JSON seed (`app/src/main/assets/foodmap_seed.json`) → Repository → **Room**.
 - MVP is **offline**: no login, no REST API, no Firebase. Firebase is Phase 2 only.
+- MVP scope v0.3 (ADR-002): no Google Maps SDK (the "Chỉ đường" button opens the Maps app via Intent);
+  filters are distance, price and rating only; no Review entity; restaurant detail does not show check-ins.
 - Check-in photo comes **only** from the in-app camera (CameraX), never from the gallery.
   `latitude`, `longitude`, `capturedAt` are set at capture time and are never user-editable.
 
@@ -34,7 +36,7 @@ UI (Activity/Fragment + XML)
 ## Package layout
 ```
 app/src/main/java/com/example/foodmap/  (package com.example.foodmap)
-  data/local/entity/     Restaurant, Food, RestaurantFood, Review, Favorite, CheckIn
+  data/local/entity/     Restaurant, Food, RestaurantFood, Favorite, CheckIn
   data/local/dao/        one DAO per entity
   data/local/            AppDatabase, SeedLoader
   data/repository/       RestaurantRepository, FoodRepository, CheckInRepository, ...
